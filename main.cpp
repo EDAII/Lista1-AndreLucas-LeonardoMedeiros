@@ -4,18 +4,22 @@
 
 using namespace std;
 
-#define NOT_FOUND -404; // Easter Egg
+#define NOT_FOUND -404;
 
 int binarySearch(vector<int> * v, int x);
 int seqSearch(vector<int> * v, int x);
-// int sentinelSeqSearch();
+int sentinelSeqSearch(vector<int> * v, int x);
 // int indexSeqSearch();
 
 int main(){
 
   vector<int> v = {1,2,3,4,5};
-  int y = binarySearch(&v, 4);
+  int x = binarySearch(&v, 1);
+  int y = seqSearch(&v, 1);
+  int z = sentinelSeqSearch(&v, 1);
+  cout << x << endl;
   cout << y << endl;
+  cout << z << endl;
 
   return 0;
 }
@@ -39,4 +43,17 @@ int seqSearch(vector<int> * v, int x){
     }
   }
   return NOT_FOUND;
+}
+
+int sentinelSeqSearch(vector<int> * v, int x){
+  v->push_back(x);
+  int i;
+  for (i=0; x!=v->at(i); i++);
+  v->pop_back();
+  if ((size_t)i < v->size()){
+    return i;
+  }
+  else{
+    return NOT_FOUND;
+  }
 }
