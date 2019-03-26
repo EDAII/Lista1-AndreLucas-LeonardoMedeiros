@@ -57,3 +57,16 @@ int sentinelSeqSearch(vector<int> * v, int x){
     return NOT_FOUND;
   }
 }
+
+int indexSeqSearch(vector<int> * v, int x){
+  int block_size = v->size()/5; 
+  int i,j;
+  for (i = block_size; i < (int) v->size(); i += block_size){
+		if (v->at(i) >= x) break;
+  }
+	for (j = i - block_size; j < i; j++){
+	  if( v->at(j) == x) return j;
+  }
+
+  return NOT_FOUND;
+}
