@@ -6,19 +6,20 @@
 
 using namespace std;
 
-#define NOT_FOUND -404;
+#define NOT_FOUND -404
 
 int binarySearch(vector<int> * v, int x);
 int seqSearch(vector<int> * v, int x);
 int sentinelSeqSearch(vector<int> * v, int x);
 int indexSeqSearch(vector<int> * v, int x);
+void compareSearchs(vector<int> * v, int x);
 
 int main(){
 
 	srand(time(NULL));  // Intialize srand seed
-	
+
 	vector<int> v;
-	for(int i=0; i<1e7; i++){
+	for(int i=0; i<1e6; i++){
     v.push_back(rand() % 1000000);
   }
 
@@ -26,14 +27,7 @@ int main(){
 
 	int findIt = rand() % 1000000;
 
-  int x = binarySearch(&v, findIt);
-  int y = seqSearch(&v, findIt);
-  int z = sentinelSeqSearch(&v, findIt);
-	int w = indexSeqSearch(&v, findIt);
-  cout << x << endl;
-  cout << y << endl;
-  cout << z << endl;
-  cout << w << endl;
+	compareSearchs(&v, findIt);
 
   return 0;
 }
@@ -73,7 +67,7 @@ int sentinelSeqSearch(vector<int> * v, int x){
 }
 
 int indexSeqSearch(vector<int> * v, int x){
-  int block_size = v->size()/5; 
+  int block_size = v->size()/5;
   int i,j;
   for (i = block_size; i < (int) v->size(); i += block_size){
 		if (v->at(i) >= x) break;
@@ -83,4 +77,32 @@ int indexSeqSearch(vector<int> * v, int x){
   }
 
   return NOT_FOUND;
+}
+
+void compareSearchs(vector<int> * v, int findIt){
+	printf("Trying to find: %d\n\n", findIt);
+
+  clock_t t = clock();
+  int x = binarySearch(v, findIt);
+  t = clock() - t;
+  if (x != NOT_FOUND) printf("Binary search: finded on positition %d in %lf seconds\n", x , (double)t / CLOCKS_PER_SEC);
+	else printf("Binary search: not found with %lf seconds\n", (double)t / CLOCKS_PER_SEC);
+
+  t = clock();
+  x = seqSearch(v, findIt);
+  t = clock() - t;
+	if (x != NOT_FOUND) printf("Sequential search: finded on positition %d in %lf seconds\n", x , (double)t / CLOCKS_PER_SEC);
+	else printf("Sequential search: not found with %lf seconds\n", (double)t / CLOCKS_PER_SEC);
+
+  t = clock();
+  x = sentinelSeqSearch(v, findIt);
+  t = clock() - t;
+	if (x != NOT_FOUND) printf("Sequential search with sentinel: finded on positition %d in %lf seconds\n", x , (double)t / CLOCKS_PER_SEC);
+	else printf("Sequential search with sentinel: not found with %lf seconds\n", (double)t / CLOCKS_PER_SEC);
+
+  t = clock();
+  x = indexSeqSearch(v, findIt);
+  t = clock() - t;
+	if (x != NOT_FOUND) printf("Indexed sequential search: finded on positition %d in %lf seconds\n", x , (double)t / CLOCKS_PER_SEC);
+	else printf("Indexed sequential search: not found with %lf seconds\n", (double)t / CLOCKS_PER_SEC);
 }
