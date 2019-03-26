@@ -1,6 +1,8 @@
 #include <iostream>
 #include <time.h>
 #include <vector>
+#include <stdlib.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -9,17 +11,29 @@ using namespace std;
 int binarySearch(vector<int> * v, int x);
 int seqSearch(vector<int> * v, int x);
 int sentinelSeqSearch(vector<int> * v, int x);
-// int indexSeqSearch();
+int indexSeqSearch(vector<int> * v, int x);
 
 int main(){
 
-  vector<int> v = {1,2,3,4,5};
-  int x = binarySearch(&v, 1);
-  int y = seqSearch(&v, 1);
-  int z = sentinelSeqSearch(&v, 1);
+	srand(time(NULL));  // Intialize srand seed
+	
+	vector<int> v;
+	for(int i=0; i<1e7; i++){
+    v.push_back(rand() % 1000000);
+  }
+
+  sort(v.begin(), v.end());
+
+	int findIt = rand() % 1000000;
+
+  int x = binarySearch(&v, findIt);
+  int y = seqSearch(&v, findIt);
+  int z = sentinelSeqSearch(&v, findIt);
+	int w = indexSeqSearch(&v, findIt);
   cout << x << endl;
   cout << y << endl;
   cout << z << endl;
+  cout << w << endl;
 
   return 0;
 }
