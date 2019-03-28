@@ -22,6 +22,8 @@ void searchs(vector<int> * v, int x);
 void fullRandom();
 void middleConcentraded();
 void printResults();
+void beginningConcentraded();
+void endingConcentraded();
 
 int main(){
 	srand(time(NULL));  // Intialize srand seed
@@ -34,14 +36,60 @@ int main(){
 	getline(cin, aux);
 	// Concentrated in middle
 	system("clear");
-	cout << "Searching for a random number in a random generated vector, with 80% concentraded in middle.\n\n";
+	cout << "Searching for a random number in a random generated vector, with 80% concentraded in the middle.\n\n";
 	middleConcentraded();
 	cout << "\nPress [ENTER] to continue.\n";
 	getline(cin, aux);
-	// Super concentrado no comeco
-	// Super concentrado no final
+	// Concentraded in beginning
+	system("clear");
+	cout << "Searching for a random number in a random generated vector, with 80% concentraded in the beginning.\n\n";
+	beginningConcentraded();
+	cout << "\nPress [ENTER] to continue.\n";
+	getline(cin, aux);
+	// Concentraded in the end
+	system("clear");
+	cout << "Searching for a random number in a random generated vector, with 80% concentraded in the ending.\n\n";
+	endingConcentraded();
+	cout << "\nPress [ENTER] to continue.\n";
+	getline(cin, aux);
 
   return 0;
+}
+
+void beginningConcentraded(){
+	vector<int> v;
+	for(int i=0; i<8*1e4; i++){
+    v.push_back(rand()%(10000));
+  }
+	for(int i=0; i<2*1e4; i++){
+    v.push_back((rand() % (100000 - 10000)) + 10000);
+  }
+
+  sort(v.begin(), v.end());
+
+	for(int i = 0; i<1000; i++){
+		int findIt = rand() % 100000;
+		searchs(&v, findIt);
+	}
+	printResults();
+}
+
+void endingConcentraded(){
+	vector<int> v;
+	for(int i=0; i<2*1e4; i++){
+    v.push_back(rand() % (100000 - 10000));
+  }
+	for(int i=0; i<8*1e4; i++){
+    v.push_back(rand()%(100000 - 90000) + 90000);
+  }
+
+  sort(v.begin(), v.end());
+
+	for(int i = 0; i<1000; i++){
+		int findIt = rand() % 100000;
+		searchs(&v, findIt);
+	}
+	printResults();
 }
 
 void middleConcentraded(){
@@ -58,7 +106,7 @@ void middleConcentraded(){
 
   sort(v.begin(), v.end());
 
-	for(int i = 0; i<100; i++){
+	for(int i = 0; i<1000; i++){
 		int findIt = rand() % 100000;
 		searchs(&v, findIt);
 	}
@@ -73,7 +121,7 @@ void fullRandom(){
 
   sort(v.begin(), v.end());
 
-	for(int i = 0; i<100; i++){
+	for(int i = 0; i<1000; i++){
 		int findIt = rand() % 100000;
 		searchs(&v, findIt);
 	}
@@ -128,10 +176,10 @@ int indexSeqSearch(vector<int> * v, int x){
 }
 
 void printResults(){
-	printf("Binary search average time: %lf seconds;\n", times[BINARY_SEARCH]/100);
-	printf("Sequential search average time: %lf seconds;\n", times[SEQUENTIAL_SEARCH]/100);
-	printf("Sequential search with sentinel average time: %lf seconds;\n", times[SENTINEL_SEQUENTIAL_SEARCH]/100);
-	printf("Indexed sequential search average time: %lf seconds;\n", times[INDEXED_SEQUENTIAL_SEARCH]/100);
+	printf("Binary search average time: %lf seconds;\n", times[BINARY_SEARCH]/1000);
+	printf("Sequential search average time: %lf seconds;\n", times[SEQUENTIAL_SEARCH]/1000);
+	printf("Sequential search with sentinel average time: %lf seconds;\n", times[SENTINEL_SEQUENTIAL_SEARCH]/1000);
+	printf("Indexed sequential search average time: %lf seconds;\n", times[INDEXED_SEQUENTIAL_SEARCH]/1000);
 
 	times[BINARY_SEARCH] = 0;
 	times[SEQUENTIAL_SEARCH] = 0;
