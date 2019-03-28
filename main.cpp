@@ -7,29 +7,77 @@
 using namespace std;
 
 #define NOT_FOUND -404
+#define BINARY_SEARCH 0
+#define SEQUENTIAL_SEARCH 1
+#define SENTINEL_SEQUENTIAL_SEARCH 2
+#define INDEXED_SEQUENTIAL_SEARCH 3
+
+double times[4] = {0,0,0,0};
 
 int binarySearch(vector<int> * v, int x);
 int seqSearch(vector<int> * v, int x);
 int sentinelSeqSearch(vector<int> * v, int x);
 int indexSeqSearch(vector<int> * v, int x);
-void compareSearchs(vector<int> * v, int x);
+void searchs(vector<int> * v, int x);
+void fullRandom();
+void middleConcentraded();
+void printResults();
 
 int main(){
-
 	srand(time(NULL));  // Intialize srand seed
+	string aux;
+	// Full random
+	system("clear");
+	cout << "Searching for a random number in a random generated vector.\n\n";
+	fullRandom();
+	cout << "\nPress [ENTER] to continue.\n";
+	getline(cin, aux);
+	// Concentrated in middle
+	system("clear");
+	cout << "Searching for a random number in a random generated vector, with 80% concentraded in middle.\n\n";
+	middleConcentraded();
+	cout << "\nPress [ENTER] to continue.\n";
+	getline(cin, aux);
+	// Super concentrado no comeco
+	// Super concentrado no final
 
+  return 0;
+}
+
+void middleConcentraded(){
 	vector<int> v;
-	for(int i=0; i<1e6; i++){
-    v.push_back(rand() % 1000000);
+	for(int i=0; i<1e4; i++){
+    v.push_back(rand() % 45000);
+  }
+	for(int i=0; i<8*1e4; i++){
+    v.push_back((rand()%(55000-45000)) + 45000 );
+  }
+	for(int i=0; i<1e4; i++){
+    v.push_back((rand() % (100000 - 55000)) + 55000);
   }
 
   sort(v.begin(), v.end());
 
-	int findIt = rand() % 1000000;
+	for(int i = 0; i<100; i++){
+		int findIt = rand() % 100000;
+		searchs(&v, findIt);
+	}
+	printResults();
+}
 
-	compareSearchs(&v, findIt);
+void fullRandom(){
+	vector<int> v;
+	for(int i=0; i<1e5; i++){
+    v.push_back(rand() % 100000);
+  }
 
-  return 0;
+  sort(v.begin(), v.end());
+
+	for(int i = 0; i<100; i++){
+		int findIt = rand() % 100000;
+		searchs(&v, findIt);
+	}
+	printResults();
 }
 
 int binarySearch(vector<int> * v, int x){
@@ -79,30 +127,36 @@ int indexSeqSearch(vector<int> * v, int x){
   return NOT_FOUND;
 }
 
-void compareSearchs(vector<int> * v, int findIt){
-	printf("Trying to find: %d\n\n", findIt);
+void printResults(){
+	printf("Binary search average time: %lf seconds;\n", times[BINARY_SEARCH]/100);
+	printf("Sequential search average time: %lf seconds;\n", times[SEQUENTIAL_SEARCH]/100);
+	printf("Sequential search with sentinel average time: %lf seconds;\n", times[SENTINEL_SEQUENTIAL_SEARCH]/100);
+	printf("Indexed sequential search average time: %lf seconds;\n", times[INDEXED_SEQUENTIAL_SEARCH]/100);
 
+	times[BINARY_SEARCH] = 0;
+	times[SEQUENTIAL_SEARCH] = 0;
+	times[INDEXED_SEQUENTIAL_SEARCH] = 0;
+	times[SENTINEL_SEQUENTIAL_SEARCH] = 0;
+}
+
+void searchs(vector<int> * v, int findIt){
   clock_t t = clock();
   int x = binarySearch(v, findIt);
   t = clock() - t;
-  if (x != NOT_FOUND) printf("Binary search: finded on positition %d in %lf seconds\n", x , (double)t / CLOCKS_PER_SEC);
-	else printf("Binary search: not found with %lf seconds\n", (double)t / CLOCKS_PER_SEC);
+	times[BINARY_SEARCH]+=(double)t/CLOCKS_PER_SEC;
 
   t = clock();
   x = seqSearch(v, findIt);
   t = clock() - t;
-	if (x != NOT_FOUND) printf("Sequential search: finded on positition %d in %lf seconds\n", x , (double)t / CLOCKS_PER_SEC);
-	else printf("Sequential search: not found with %lf seconds\n", (double)t / CLOCKS_PER_SEC);
+	times[SEQUENTIAL_SEARCH]+=(double)t/CLOCKS_PER_SEC;
 
   t = clock();
   x = sentinelSeqSearch(v, findIt);
   t = clock() - t;
-	if (x != NOT_FOUND) printf("Sequential search with sentinel: finded on positition %d in %lf seconds\n", x , (double)t / CLOCKS_PER_SEC);
-	else printf("Sequential search with sentinel: not found with %lf seconds\n", (double)t / CLOCKS_PER_SEC);
+	times[SENTINEL_SEQUENTIAL_SEARCH]+=(double)t/CLOCKS_PER_SEC;
 
   t = clock();
   x = indexSeqSearch(v, findIt);
   t = clock() - t;
-	if (x != NOT_FOUND) printf("Indexed sequential search: finded on positition %d in %lf seconds\n", x , (double)t / CLOCKS_PER_SEC);
-	else printf("Indexed sequential search: not found with %lf seconds\n", (double)t / CLOCKS_PER_SEC);
+	times[INDEXED_SEQUENTIAL_SEARCH]+=(double)t/CLOCKS_PER_SEC;
 }
