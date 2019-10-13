@@ -9,7 +9,7 @@ Leonardo de Araujo Medeiros - 17/0038891
 
 1. Faça o clone deste projeto com ```$ git clone https://github.com/EDAII/Lista1-AndreLucas-LeonardoMedeiros.git ```
 2. Acesse a pasta do projeto via terminal
-3. Execute os seguintes comandos ``` $ g++ main.cpp -o prog -std=c++11 ```
+3. Execute os seguintes comandos ``` $ g++ main.cpp -o prog -std=c++11 -static```
 4. Rode a aplicação com ``` $ ./prog``` 
 
 ## Ideia proposta
